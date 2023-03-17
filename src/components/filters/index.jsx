@@ -26,7 +26,8 @@ export const Filters = () => {
             <div>
                 {filters.map((item, index) => {
                     return (
-                        <div key={item.index} className="px-2 " onClick={()=>{
+                        <div key={item.index} className="px-2 " >
+                            <a href="#" className="h6" onClick={()=>{
                             let newFilters = filters.map(x=>x);
                             newFilters.forEach((x,i)=>{
                               if(i==index){
@@ -34,8 +35,7 @@ export const Filters = () => {
                               }
                            });
                            setFilters(newFilters);
-                        }}>
-                            <a href="#" className="h6">{item.value}</a>
+                        }}>{item.value}</a>
                            <div className={item.display}> {createFilters(item.range,item.type,item.key)}</div>
                         </div>
                     )
