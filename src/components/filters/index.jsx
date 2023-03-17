@@ -1,12 +1,21 @@
+import { useState } from "react"
 import { FILTERS } from "../../constants/filters"
-
+import "./index.css"
 export const Filters = () => {
+    const extendedFilters = FILTERS.map(x=>{
+        return {
+            ...x,display:"show"
+        }
+    })
+    const [filters,setFilters] = useState(extendedFilters);
+
     const createFilters = (data,type,groupName) => {
         return (
             <div>
                 {data.map((item, index) => {
-                    return (<div><input type={type} name={groupName} value={item.value} />
-                        {item.value}
+                    return (<div className="ml-2 px-3 " key={item.key}>
+                        <input type={type} name={groupName} value={item.value} />
+                        <label className="ml-3 px-2">{item.value}</label>
                     </div>)
                 })}
             </div>
@@ -15,11 +24,19 @@ export const Filters = () => {
     const createHeading = () => {
         return (
             <div>
-                {FILTERS.map((item, index) => {
+                {filters.map((item, index) => {
                     return (
-                        <div key={item.key}>
-                            <h6>{item.value}</h6>
-                            {createFilters(item.range,item.type,item.key)}
+                        <div key={item.index} className="px-2 " onClick={()=>{
+                            let newFilters = filters.map(x=>x);
+                            newFilters.forEach((x,i)=>{
+                              if(i==index){
+                                item.display= item.display=='show'?'hide':'show';
+                              }
+                           });
+                           setFilters(newFilters);
+                        }}>
+                            <a href="#" className="h6">{item.value}</a>
+                           <div className={item.display}> {createFilters(item.range,item.type,item.key)}</div>
                         </div>
                     )
                 })}
@@ -29,7 +46,7 @@ export const Filters = () => {
     }
 
     return (
-        <div className="col-md-3">
+        <div className="col-md-5">
             {createHeading()}
         </div>
     )
